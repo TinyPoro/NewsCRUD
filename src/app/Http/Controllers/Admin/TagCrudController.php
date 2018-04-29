@@ -1,11 +1,12 @@
 <?php
 
-namespace Backpack\NewsCRUD\app\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
-use Backpack\NewsCRUD\app\Http\Requests\TagRequest as StoreRequest;
-use Backpack\NewsCRUD\app\Http\Requests\TagRequest as UpdateRequest;
+use App\Http\Requests\TagRequest as StoreRequest;
+use App\Http\Requests\TagRequest as UpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class TagCrudController extends CrudController
 {
@@ -18,7 +19,7 @@ class TagCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel("Backpack\NewsCRUD\app\Models\Tag");
+        $this->crud->setModel("App\Models\Tag");
         $this->crud->setRoute(config('backpack.base.route_prefix', 'admin').'/tag');
         $this->crud->setEntityNameStrings('tag', 'tags');
 
@@ -60,5 +61,31 @@ class TagCrudController extends CrudController
     public function update(UpdateRequest $request)
     {
         return parent::updateCrud();
+    }
+
+    public function create(){
+        $user = Auth::user();
+
+        if($user->hasRole('Admin')) return parent::create();
+
+        \Alert::warning('Bạn không có quyền sử dụng tính năng này')->flash();
+
+        return redirect()->route('crud.tag.index');
+    }
+
+    public function edit($id){
+        $user = Auth::user();
+
+        if(!$user->hasRole('Author')) return parent::edit($id);
+        \Alert::warning('Bạn không thể chỉnh sửa tag')->flash();
+        return redirect()->route('crud.tag.index');
+    }
+
+    public function destroy($id){
+        $user = Auth::user();
+
+        if(!$user->hasRole('Author')) return parent::destroy($id);
+        \Alert::warning('Bạn không thể xóa tag')->flash();
+        return redirect()->route('crud.tag.index');
     }
 }

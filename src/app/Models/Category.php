@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\NewsCRUD\app\Models;
+namespace App\Models;
 
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -54,17 +54,17 @@ class Category extends Model
 
     public function parent()
     {
-        return $this->belongsTo('Backpack\NewsCRUD\app\Models\Category', 'parent_id');
+        return $this->belongsTo('App\Models\Category', 'parent_id');
     }
 
     public function children()
     {
-        return $this->hasMany('Backpack\NewsCRUD\app\Models\Category', 'parent_id');
+        return $this->hasMany('App\Models\Category', 'parent_id');
     }
 
     public function articles()
     {
-        return $this->hasMany('Backpack\NewsCRUD\app\Models\Article');
+        return $this->hasMany('App\Models\Article');
     }
 
     /*
@@ -101,4 +101,27 @@ class Category extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+
+    public function getName(){
+        $start_string = '';
+
+        for($i = 1; $i < $this->depth; $i++) $start_string .= '-';
+
+        return $start_string.' '.$this->name;
+    }
+
+    public function canHaveParent($id){
+        $cur_id = $id;
+
+        do{
+            $cate = self::find($cur_id);
+            $parent_id = $cate->parent_id;
+
+            if($parent_id == $this->id) return false;
+
+            $cur_id = $parent_id;
+        }while($cur_id != null);
+
+        return true;
+    }
 }

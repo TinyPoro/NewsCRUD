@@ -1,11 +1,13 @@
 <?php
 
-namespace Backpack\NewsCRUD\app\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin;
 
+use App\Models\Article;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
-use Backpack\NewsCRUD\app\Http\Requests\ArticleRequest as StoreRequest;
-use Backpack\NewsCRUD\app\Http\Requests\ArticleRequest as UpdateRequest;
+use App\Http\Requests\ArticleRequest as StoreRequest;
+use App\Http\Requests\ArticleRequest as UpdateRequest;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleCrudController extends CrudController
 {
@@ -18,7 +20,7 @@ class ArticleCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel("Backpack\NewsCRUD\app\Models\Article");
+        $this->crud->setModel("App\Models\Article");
         $this->crud->setRoute(config('backpack.base.route_prefix', 'admin').'/article');
         $this->crud->setEntityNameStrings('article', 'articles');
 
@@ -53,7 +55,7 @@ class ArticleCrudController extends CrudController
                                 'name' => 'category_id',
                                 'entity' => 'category',
                                 'attribute' => 'name',
-                                'model' => "Backpack\NewsCRUD\app\Models\Category",
+                                'model' => "App\Models\Category",
                             ]);
 
         // ------ CRUD FIELDS
@@ -100,7 +102,7 @@ class ArticleCrudController extends CrudController
                                 'name' => 'category_id',
                                 'entity' => 'category',
                                 'attribute' => 'name',
-                                'model' => "Backpack\NewsCRUD\app\Models\Category",
+                                'model' => "App\Models\Category",
                             ]);
         $this->crud->addField([       // Select2Multiple = n-n relationship (with pivot table)
                                 'label' => 'Tags',
@@ -108,7 +110,7 @@ class ArticleCrudController extends CrudController
                                 'name' => 'tags', // the method that defines the relationship in your Model
                                 'entity' => 'tags', // the method that defines the relationship in your Model
                                 'attribute' => 'name', // foreign key attribute that is shown to user
-                                'model' => "Backpack\NewsCRUD\app\Models\Tag", // foreign key model
+                                'model' => "App\Models\Tag", // foreign key model
                                 'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
                             ]);
         $this->crud->addField([    // ENUM
@@ -125,13 +127,49 @@ class ArticleCrudController extends CrudController
         $this->crud->enableAjaxTable();
     }
 
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view('vendor.backpack.crud.create_article', $this->data);
+    }
+
     public function store(StoreRequest $request)
     {
-        return parent::storeCrud();
+        $request->request->set('user_id', Auth::user()->id);
+        return parent::storeCrud($request);
     }
 
     public function update(UpdateRequest $request)
     {
         return parent::updateCrud();
+    }
+
+    public function edit($id){
+        $user = Auth::user();
+
+        if($user->hasRole('Author')) {
+            $article = Article::find($id);
+            if($article->user->id != $user->id) {
+                \Alert::warning('Bạn không thể chỉnh sửa bài viết của người khác')->flash();
+                return redirect()->route('crud.article.index');
+            }
+        }
+
+        return parent::edit($id);
+    }
+
+    public function destroy($id){
+        $user = Auth::user();
+
+        if(!$user->hasRole('Author')) return parent::destroy($id);
+        return redirect()->route('crud.article.index');
     }
 }
