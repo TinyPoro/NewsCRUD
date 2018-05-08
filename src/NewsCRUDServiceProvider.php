@@ -19,7 +19,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public $routeFilePath = '/routes/poro/backpack.php';
+    public $routeFilePath = '/routes/poro/web.php';
 
     /**
      * Perform post-registration booting of services.
@@ -28,6 +28,9 @@ class NewsCRUDServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // publish app
+        $this->publishes([__DIR__.'/app' => app_path('')], 'app');
+
         // publish migrations
         $this->publishes([__DIR__.'/database' => database_path('migrations')], 'migrations');
     }
@@ -43,7 +46,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
         $this->app->register(\Cviebrock\EloquentSluggable\ServiceProvider::class);
 
         // setup the routes
-        $this->setupRoutes($this->app->router);
+//        $this->setupRoutes($this->app->router);
     }
 
     /**
