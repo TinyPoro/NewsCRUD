@@ -32,7 +32,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
         $this->publishes([__DIR__.'/app' => app_path('')], 'app');
 
         // publish resources
-        $this->publishes([__DIR__.'/resources' => resources_path('')], 'resources');
+        $this->publishes([__DIR__.'/resources' => resource_path('')], 'resources');
 
         // publish migrations
         $this->publishes([__DIR__.'/database' => database_path('migrations')], 'migrations');
