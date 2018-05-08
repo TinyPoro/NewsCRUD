@@ -19,7 +19,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public $routeFilePath = '/routes/web.php';
+    public $routeFilePath = '/routes/poro/backpack.php';
 
     /**
      * Perform post-registration booting of services.
