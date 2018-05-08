@@ -19,7 +19,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public $routeFilePath = '/routes/backpack/newscrud.php';
+    public $routeFilePath = '/routes/web.php';
 
     /**
      * Perform post-registration booting of services.
@@ -29,7 +29,7 @@ class NewsCRUDServiceProvider extends ServiceProvider
     public function boot()
     {
         // publish migrations
-        $this->publishes([__DIR__.'/database/migrations' => database_path('migrations')], 'migrations');
+        $this->publishes([__DIR__.'/database' => database_path('migrations')], 'migrations');
     }
 
     /**

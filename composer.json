@@ -1,20 +1,10 @@
 {
-    "name": "backpack/newscrud",
+    "name": "poro_bp/newscrud",
     "type": "library",
-    "description": "An admin panel for news with categories and tags, using Backpack\\CRUD on Laravel 5.",
+    "description": "Poro admin panel for news with categories and tags, using Backpack\\CRUD on Laravel 5.",
     "keywords": [
         "backpack",
         "NewsCRUD"
-    ],
-    "homepage": "https://github.com/Laravel-Backpack/NewsCRUD",
-    "license": "proprietary",
-    "authors": [
-        {
-            "name": "Cristian Tabacitu",
-            "email": "hello@tabacitu.ro",
-            "homepage": "http://tabacitu.ro",
-            "role": "Developer"
-        }
     ],
     "require": {
         "backpack/crud": "^3.0.6",
