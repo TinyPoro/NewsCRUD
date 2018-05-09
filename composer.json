@@ -1,5 +1,5 @@
 {
-    "name": "backpack/poro-newscrud ",
+    "name": "poro_bp/newscrud",
     "type": "library",
     "description": "Poro admin panel for news with categories and tags, using Backpack\\CRUD on Laravel 5.",
     "keywords": [

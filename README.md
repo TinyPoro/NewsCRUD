@@ -1,15 +1,9 @@
-# Backpack\NewsCRUD
-
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
+# Poro\NewsCRUD
 
 Package quản lý bài viết, danh mục và tag, sử dụng [Laravel Backpack](https://github.com/Laravel-Backpack)
 
 ## Cài đặt
+* `Lưu ý`: Trong quá trình cài đặt nếu gặp lỗi key length to long, bạn có thể làm theo [hướng dẫn](https://laravel-news.com/laravel-5-4-key-too-long-error) để khắc phục
 1) Cài đặt Backpack Base và Crud
 ```
 composer require backpack/crud
@@ -17,30 +11,24 @@ composer require backpack/crud
 php artisan backpack:base:install
 php artisan backpack:crud:install
 ```
-2) (Tùy chọn) Theo hướng dẫn và cài đặt [LaravelBackpack Permission Manager](https://github.com/Laravel-Backpack/PermissionManager#install)
-1) [Tải bản mới nhất về](https://github.com/TinyPoro/NewsCRUD/archive/master.zip).
+2) Theo hướng dẫn và cài đặt [LaravelBackpack Permission Manager](https://github.com/Laravel-Backpack/PermissionManager#install)
 
-2) Đặt các thư mục 'app', 'database' và 'resources/views' vào trong project của bạn (gộp chúng lại). Nếu không có cảnh báo nào thì OK.
+3) Cài đặt siêu package `Poro`.
+```
+composer require poro_bp/newscrud
+```
 
-3) Thay namespace các file trong 'App` phù hợp với của bạn
-
-4) Chạy migrate cơ sở dữ liệu:
+4) Thêm service provider vào trong file `config/app.php`:
+```
+'Backpack\NewsCRUD\NewsCRUDServiceProvider',
+```
+5) Publish service provider(nhớ có force để nó thay thế mấy cái file cũ của bạn).
+```
+php artisan vendor:publish --force --provider="Backpack\NewsCRUD\NewsCRUDServiceProvider"
+```
+6) Chạy migrate thui^^
 ```
 php artisan migrate
 ```
-
-5) Copy nội dung file `web.php` vào file `route.php` của bạn:
-
-6) [Tùy chọn] Thêm các thành phần menu vào file resources/views/vendor/backpack/base/inc/sidebar.blade.php hoặc menu.blade.php:
-
-```html
-<li class="treeview">
-    <a href="#"><i class="fa fa-newspaper-o"></i> <span>News</span> <i class="fa fa-angle-left pull-right"></i></a>
-    <ul class="treeview-menu">
-      <li><a href="{{ backpack_url('article') }}"><i class="fa fa-newspaper-o"></i> <span>Articles</span></a></li>
-      <li><a href="{{ backpack_url('category') }}"><i class="fa fa-list"></i> <span>Categories</span></a></li>
-      <li><a href="{{ backpack_url('tag') }}"><i class="fa fa-tag"></i> <span>Tags</span></a></li>
-    </ul>
-</li>
-```
+7) Xong rùi đó <3 
 
