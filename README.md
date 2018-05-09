@@ -31,5 +31,3 @@ php artisan vendor:publish --force --provider="Backpack\NewsCRUD\NewsCRUDService
 php artisan migrate
 ```
 7) Xong rùi đó <3 
-
-   

@@ -6,6 +6,7 @@
         "backpack",
         "NewsCRUD"
     ],
+    "license": "MIT",
     "require": {
         "backpack/crud": "^3.0.6",
         "cviebrock/eloquent-sluggable": "^4.0"
