@@ -1,6 +1,6 @@
 <?php
 
-namespace Backpack\NewsCRUD;
+namespace PoroBp\NewsCRUD;
 
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;

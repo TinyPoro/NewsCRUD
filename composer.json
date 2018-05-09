@@ -17,12 +17,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Backpack\\NewsCRUD\\": "src"
+            "PoroBp\\NewsCRUD\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Backpack\\NewsCRUD\\": "tests"
+            "PoroBp\\NewsCRUD\\": "tests"
         }
     },
     "scripts": {
@@ -34,7 +34,7 @@
         },
         "laravel": {
             "providers": [
-                "Backpack\\NewsCRUD\\NewsCRUDServiceProvider"
+                "PoroBp\\NewsCRUD\\NewsCRUDServiceProvider"
             ]
         }
     }
