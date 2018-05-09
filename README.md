@@ -32,3 +32,4 @@ php artisan migrate
 ```
 7) Xong rùi đó <3 
 
+   
